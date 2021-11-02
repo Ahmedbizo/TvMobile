@@ -1,0 +1,6 @@
+module Pods_TvShow {
+  umbrella header "Pods-TvShow-umbrella.h"
+
+  export *
+  module * { export * }
+}
