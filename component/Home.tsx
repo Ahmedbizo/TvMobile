@@ -17,10 +17,10 @@ import axios, {AxiosResponse} from 'axios';
 
 
 
-const Home = ({Navigation}) => {
+const Home = () => {
  
 const [showData,setShowData]= useState <Show[]>([]);
-const [searchfeild, setSearchfeild] = useState('');
+const [searchfeild, setSearchfeild] = useState ('');
 
 useEffect(() => {
 axios
@@ -40,7 +40,7 @@ axios
       <View style={styles.container}>
         {showData
           .filter(showData =>
-            showData.id
+            showData.name
           )
           .map((showData, index) => {
             return (
@@ -48,7 +48,7 @@ axios
                 activeOpacity={0.5}
                 key={index}
                 style={styles.card}
-                onPress={() => Navigation.navigate('Details')}
+               
                   
                 >
                
