@@ -18,22 +18,20 @@ const Details = (props: { navigation: { state: any; }; }) => {
         .then(details => setDetails(details));
     };
   
-    return details.name ? (
+    return details ? (
       <View style={{flex: 1, alignItems: 'center'}}>
         <Image
           style={styles.image}
           source={{
-            uri: `https://api.tvmaze.com/search/shows?q=girls${
-              details.name
-            }.png`,
+            uri: `https://api.tvmaze.com/search/shows?q=girls`,
           }}
         />
         <Text style={styles.text}> {details}</Text>
         
         <Text style={styles.text}>
-          Ability: {details.name}
+          Ability: {details}
         </Text>
-        <Text style={styles.text}>Type: {details.types[0].type.name}</Text>
+        <Text style={styles.text}>Type: {details}</Text>
       </View>
     ) : (
       <View style={styles.indicator}>
