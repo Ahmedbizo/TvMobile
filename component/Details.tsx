@@ -1,121 +1,68 @@
-import React, {useState,useEffect} from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import { Show } from '../interfaces'
-import axios, {AxiosResponse} from 'axios';
+import React, {useState, useEffect} from 'react';
+import {View, Text, Image, StyleSheet, ActivityIndicator} from 'react-native';
 
 
 
 
-
-
-
-
-const Home = () => {
- 
-const [showData,setShowData]= useState <Show[]>([]);
-const [searchfeild, setSearchfeild] = useState ('');
-
-useEffect(() => {
-axios
-.get<Show>('https://api.tvmaze.com/search/shows?q=girls')
-.then((response:AxiosResponse) => {
-  console.clear();
-  console.log ('response:', response.data)
-  setShowData(response.data)
-})
-
-}, []);
-
-  return(
-
-    <View>
-       <ScrollView>
-      <View style={styles.container}>
-        {showData
-          .filter(showData =>
-            showData.name
-          )
-          .map((showData, index) => {
-            return (
-              <TouchableOpacity
-                activeOpacity={0.5}
-                key={index}
-                style={styles.card}
-               
-                  
-                >
-               
-                <Text>{showData.id}</Text>
-              </TouchableOpacity>
-            );
-          })}
-      </View>
-    </ScrollView>
-
-
-    <View style={styles.searchCont}>
-      <TextInput
-        style={styles.searchfeild}
-        placeholder="Search Tv Show"
-        onChangeText={value => setSearchfeild(value)}
-        value={searchfeild}
-      />
-      
-    </View>
-   
-   
-  </View>
-  )
-};
-
-
-
-
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    marginTop: 70,
-  },
-  card: {
-    display: 'flex',
-    alignItems: 'center',
-    borderBottomWidth:1,
-    borderBottomColor: '#0000cd',
-    marginHorizontal: 20,
-    marginVertical: 10,
-    backgroundColor: '#ffc0cb',
-    borderRadius: 50,
-    
-    
-  },
-  searchCont: {
-    position: 'absolute',
-    marginBottom: 70,
-    left: '20%',
-    zIndex: 1,
-    marginTop: 10,
-  },
-  searchfeild: {
-    height: 50,
-    borderWidth: 3,
-    borderColor: '#0000cd',
-    textAlign: 'center',
-    width: 250,
-    borderRadius: 50,
-    marginTop:35
+const Details = (props: { navigation: { state: any; }; }) => {
+    const [details, setDetails] = useState([]);
   
-  },
-});
+    useEffect(() => {
+      fetchTvDetails();
+    }, []);
+  
+    const fetchTvDetails = () => {
+      const {state} = props.navigation;
+      fetch(`https://api.tvmaze.com/search/shows?q=girls`)
+        .then(res => res.json())
+        .then(details => setDetails(details));
+    };
+  
+    return details.name ? (
+      <View style={{flex: 1, alignItems: 'center'}}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: `https://api.tvmaze.com/search/shows?q=girls${
+              details.name
+            }.png`,
+          }}
+        />
+        <Text style={styles.text}> {details}</Text>
+        
+        <Text style={styles.text}>
+          Ability: {details.name}
+        </Text>
+        <Text style={styles.text}>Type: {details.types[0].type.name}</Text>
+      </View>
+    ) : (
+      <View style={styles.indicator}>
+        <ActivityIndicator size="large" color="#E63F34" />
+      </View>
+    );
+  };
 
-export default Home;
+
+
+  const styles = StyleSheet.create({
+    image: {
+      width: 250,
+      height: 250,
+      backgroundColor: '#ffb6c1',
+      borderRadius: 50,
+    },
+    text: {
+      fontSize: 30,
+      marginBottom: 20,
+      
+    },
+    indicator: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+     
+    },
+  });
+
+
+  export default Details;

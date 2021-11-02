@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Detals">
         <Stack.Screen name="Tv Show " component={Home} />
         <Stack.Screen name="Details " component={Details} />
       </Stack.Navigator>
